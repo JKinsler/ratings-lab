@@ -45,7 +45,36 @@ def show_form():
 def get_user_info():
     """Get email and password from users."""
     email = request.form.get("email")
+    print(email)
     password = request.form.get("password")
+    print(password)
+
+    test_email = User.query.filter_by(email=email).first()
+    if test_email is None:
+        user = User(email=email, password=password)
+        db.session.add(user)
+        db.session.commit()
+    else:
+        print('Please register with a different email address')
+
+    return redirect("/")
+
+@app.route("/register_user", methods=["POST"])
+def get_user_info():
+    """Get email and password from users."""
+    email = request.form.get("email")
+    print(email)
+    password = request.form.get("password")
+    print(password)
+
+    test_email = User.query.filter_by(email=email).first()
+    if test_email is None:
+        user = User(email=email, password=password)
+        db.session.add(user)
+        db.session.commit()
+    else:
+        print('Please register with a different email address')
+
     return redirect("/")
 
 
