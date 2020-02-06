@@ -26,6 +26,7 @@ def index():
     """Homepage."""
     return render_template("homepage.html")
 
+
 @app.route("/users")
 def user_list():
     """Show list of users."""
@@ -35,15 +36,15 @@ def user_list():
 
 
 @app.route("/register_user", methods=["GET"])
-def show_form():
-    """Get email and password from users."""
-    
+def show_registration_form():
+    """Show form to users when registering."""
+
     return render_template("register_user.html")
 
 
 @app.route("/register_user", methods=["POST"])
 def get_user_info():
-    """Get email and password from users."""
+    """Get email and password from users when registering."""
     email = request.form.get("email")
     print(email)
     password = request.form.get("password")
@@ -59,23 +60,32 @@ def get_user_info():
 
     return redirect("/")
 
-@app.route("/register_user", methods=["POST"])
-def get_user_info():
-    """Get email and password from users."""
+
+@app.route("/login", methods=["GET"])
+def show_login_form():
+    """Get email and password from users when login."""
+
+    return render_template("login.html")
+
+
+@app.route("/login", methods=["POST"])
+def get_user_login_info():
+    """Get email and password from users when login."""
     email = request.form.get("email")
-    print(email)
+    # print(email)
     password = request.form.get("password")
-    print(password)
+    # print(password)
 
-    test_email = User.query.filter_by(email=email).first()
-    if test_email is None:
-        user = User(email=email, password=password)
-        db.session.add(user)
-        db.session.commit()
+    user = User.query.filter_by(email=email).first()
+
+    if user is None:
+        print('User info not found. Please register.')
+        return redirect("/register_user")
+
     else:
-        print('Please register with a different email address')
-
-    return redirect("/")
+        # user = User(email=email, password=password)
+        if user.password == password:
+            return redirect("/")
 
 
 if __name__ == "__main__":
