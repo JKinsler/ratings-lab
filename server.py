@@ -33,11 +33,21 @@ def user_list():
     users = User.query.all()
     return render_template("user_list.html", users=users)
 
-@app.route("/register_user", method='POST')
+
+@app.route("/register_user", methods=["GET"])
+def show_form():
+    """Get email and password from users."""
+    
+    return render_template("register_user.html")
+
+
+@app.route("/register_user", methods=["POST"])
 def get_user_info():
     """Get email and password from users."""
+    email = request.form.get("email")
+    password = request.form.get("password")
+    return redirect("/")
 
-    return render_template("register_user.html")
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
